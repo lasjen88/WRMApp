@@ -7,15 +7,12 @@ import (
 	"net/http"
 	"strconv"
 
+	"./v1/models"
+
 	"github.com/gorilla/mux"
 )
 
-type Character struct {
-	ID   string `json:"id"`
-	Name string `json:"name"`
-}
-
-var characters []Character
+var characters []models.Character
 
 func getCharacters(writer http.ResponseWriter, request *http.Request) {
 	writer.Header().Set("Content-Type", "application/json")
@@ -24,7 +21,7 @@ func getCharacters(writer http.ResponseWriter, request *http.Request) {
 
 func createCharacter(writer http.ResponseWriter, request *http.Request) {
 	writer.Header().Set("Content-Type", "application/json")
-	var character Character
+	var character models.Character
 	_ = json.NewDecoder(request.Body).Decode(&character)
 	character.ID = strconv.Itoa(rand.Intn(1000000)) // @TODO FIX
 	characters = append(characters, character)
@@ -40,7 +37,7 @@ func getCharacter(writer http.ResponseWriter, request *http.Request) {
 			return
 		}
 	}
-	json.NewEncoder(writer).Encode(&Character{})
+	json.NewEncoder(writer).Encode(&models.Character{})
 }
 
 func deleteCharacter(writer http.ResponseWriter, request *http.Request) {
@@ -61,7 +58,7 @@ func updateCharacter(writer http.ResponseWriter, request *http.Request) {
 
 	for index, item := range characters {
 		if item.ID == params["id"] {
-			var character Character
+			var character models.Character
 			_ = json.NewDecoder(request.Body).Decode(&character)
 			characters = append(characters[:index], characters[index+1:]...)
 			characters = append(characters, character)
@@ -73,19 +70,18 @@ func updateCharacter(writer http.ResponseWriter, request *http.Request) {
 
 func main() {
 
-	//Init Router
 	router := mux.NewRouter()
 
 	// Some data for testing @TODO -- Mongo
-	characters = append(characters, Character{ID: "1", Name: "John"})
-	characters = append(characters, Character{ID: "2", Name: "Smith"})
+	characters = append(characters, models.Character{ID: "1", Name: "John"})
+	characters = append(characters, models.Character{ID: "2", Name: "Smith"})
 
 	// Router Handlers
-	router.HandleFunc("/api/characters", getCharacters).Methods("GET")
-	router.HandleFunc("/api/characters", createCharacter).Methods("POST")
-	router.HandleFunc("/api/characters/{id}", getCharacter).Methods("GET")
-	router.HandleFunc("/api/characters/{id}", updateCharacter).Methods("PUT")
-	router.HandleFunc("/api/characters/{id}", deleteCharacter).Methods("DELETE")
+	router.HandleFunc("/v1/characters", getCharacters).Methods("GET")
+	router.HandleFunc("/v1/characters", createCharacter).Methods("POST")
+	router.HandleFunc("/v1/characters/{id}", getCharacter).Methods("GET")
+	router.HandleFunc("/v1/characters/{id}", updateCharacter).Methods("PUT")
+	router.HandleFunc("/v1/characters/{id}", deleteCharacter).Methods("DELETE")
 
 	log.Fatal(http.ListenAndServe(":8000", router))
 }
