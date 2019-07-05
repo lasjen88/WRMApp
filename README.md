@@ -1,6 +1,6 @@
 # WRMApp
 
-* Frontend: Flutter
+* Frontend: react or angular
 * Backend: Golang
 * DB: Mongo
 
