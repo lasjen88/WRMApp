@@ -8,9 +8,6 @@ import (
 //GetSession creates and returns an mgo session to the MongoDb at the specified URL.
 func GetSession(URL string) *mgo.Session {
 	session, err := mgo.Dial(URL)
-	log.WithFields(log.Fields{
-		"url": URL,
-	})
 	if err != nil {
 		log.Fatal(err)
 	} else {
