@@ -11,7 +11,7 @@ func GetSession(URL string) *mgo.Session {
 	if err != nil {
 		log.Fatal(err)
 	} else {
-		log.Info("MongoDb connected at %v", URL)
+		log.Infof("MongoDb connected at %v", URL)
 	}
 	return session
 }
