@@ -2,12 +2,13 @@ package main
 
 import (
 	"encoding/json"
-	"log"
 	"math/rand"
 	"net/http"
 	"strconv"
 
 	"./v1/models"
+	mongo "./v1/mongo"
+	log "github.com/sirupsen/logrus"
 
 	"github.com/gorilla/mux"
 )
@@ -68,9 +69,22 @@ func updateCharacter(writer http.ResponseWriter, request *http.Request) {
 	json.NewEncoder(writer).Encode(characters)
 }
 
+const (
+	URL     = "localhost"
+	DB_NAME = "wrm"
+)
+
 func main() {
 
 	router := mux.NewRouter()
+
+	mongoSession := mongo.GetSession(URL)
+	DB := mongo.Use(mongoSession, DB_NAME)
+	log.Infof("Databases")
+	mongo.PrintDBNames(mongoSession)
+	log.Infof("Collections")
+	mongo.PrintCollectionNames(DB)
+	defer mongoSession.Close()
 
 	// Some data for testing @TODO -- Mongo
 	characters = append(characters, models.Character{ID: "1", Name: "John"})
