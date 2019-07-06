@@ -80,10 +80,11 @@ func main() {
 
 	mongoSession := mongo.GetSession(URL)
 	DB := mongo.Use(mongoSession, DB_NAME)
-	log.Infof("Databases")
+	log.Infof("Databases: ")
 	mongo.PrintDBNames(mongoSession)
-	log.Infof("Collections")
-	mongo.PrintCollectionNames(DB)
+	log.Infof("Collections and Documents: ")
+	//mongo.PrintCollectionNames(DB)
+	mongo.PrintCollections(DB)
 	defer mongoSession.Close()
 
 	// Some data for testing @TODO -- Mongo
