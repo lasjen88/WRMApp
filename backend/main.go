@@ -6,8 +6,9 @@ import (
 	"net/http"
 	"strconv"
 
-	"./v1/models"
 	mongo "./v1/mongo"
+	"github.com/lasjen88/WRMApp/backend/v1/initiativeservice"
+	"github.com/lasjen88/WRMApp/backend/v1/models"
 	log "github.com/sirupsen/logrus"
 
 	"github.com/gorilla/mux"
@@ -87,16 +88,14 @@ func main() {
 	mongo.PrintCollections(DB)
 	defer mongoSession.Close()
 
-	// Some data for testing @TODO -- Mongo
-	characters = append(characters, models.Character{ID: "1", Name: "John"})
-	characters = append(characters, models.Character{ID: "2", Name: "Smith"})
-
 	// Router Handlers
 	router.HandleFunc("/v1/characters", getCharacters).Methods("GET")
 	router.HandleFunc("/v1/characters", createCharacter).Methods("POST")
 	router.HandleFunc("/v1/characters/{id}", getCharacter).Methods("GET")
 	router.HandleFunc("/v1/characters/{id}", updateCharacter).Methods("PUT")
 	router.HandleFunc("/v1/characters/{id}", deleteCharacter).Methods("DELETE")
+
+	router.HandleFunc("/v1/initiative", initiativeservice.GetInitiative).Methods("GET")
 
 	log.Fatal(http.ListenAndServe(":8000", router))
 }

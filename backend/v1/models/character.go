@@ -3,6 +3,7 @@ package models
 //Character stores a character for wrm
 type Character struct {
 	ID              string       `json:"id"`
+	CharacterName   string       `json:"charactername"`
 	PlayerName      string       `json:"playername"`
 	Race            Race         `json:"race"`
 	Appearance      string       `json:"appearance"`
