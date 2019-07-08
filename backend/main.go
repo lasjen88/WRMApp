@@ -6,6 +6,9 @@ import (
 	mongo "./v1/mongo"
 	"github.com/lasjen88/WRMApp/backend/v1/characterservice"
 	"github.com/lasjen88/WRMApp/backend/v1/itemservice"
+	"github.com/lasjen88/WRMApp/backend/v1/initiativeservice"
+	"github.com/lasjen88/WRMApp/backend/v1/models"
+
 	log "github.com/sirupsen/logrus"
 
 	"github.com/gorilla/mux"
@@ -39,6 +42,8 @@ func main() {
 
 	// Router Handlers
 	router = setRouteHandles()
+
+	router.HandleFunc("/v1/initiative", initiativeservice.GetInitiative).Methods("GET")
 
 	log.Fatal(http.ListenAndServe(":8000", router))
 }
