@@ -3,7 +3,9 @@ package itemservice
 import (
 	"encoding/json"
 	"net/http"
+	"strconv"
 
+	"github.com/gorilla/mux"
 	"github.com/lasjen88/WRMApp/backend/v1/models"
 	"github.com/lasjen88/WRMApp/wrmrules"
 	log "github.com/sirupsen/logrus"
@@ -31,6 +33,20 @@ func GetSpells(writer http.ResponseWriter, request *http.Request) {
 	json.NewEncoder(writer).Encode(spells)
 }
 
+//GetCircleSpells provides all spells from the specified circle
+func GetCircleSpells(writer http.ResponseWriter, request *http.Request) {
+	writer.Header().Set(ContentTypeHeaderKey, ContentTypeHeaderValue)
+	params := mux.Vars(request)
+	circle, err := strconv.Atoi(params["circle"])
+	if err != nil {
+		log.Error(err)
+		return
+	}
+	spells := mockReadAllSpallsDatabase()
+	circledSpells := getSpellsFromCircle(spells, circle)
+	json.NewEncoder(writer).Encode(circledSpells)
+}
+
 //CreateSpell creates a spell
 func CreateSpell(writer http.ResponseWriter, request *http.Request) {
 	writer.Header().Set(ContentTypeHeaderKey, ContentTypeHeaderValue)
@@ -48,4 +64,18 @@ func CreateSpell(writer http.ResponseWriter, request *http.Request) {
 		SpellDescription: spellDto.SpellDescription,
 	}
 	json.NewEncoder(writer).Encode(spell)
+}
+
+func getSpellsFromCircle(allSpells []models.Spell, circle int) []models.Spell {
+	circledSpells := allSpells[:0]
+	for _, spell := range allSpells {
+		if isCircle(spell, circle) {
+			circledSpells = append(circledSpells, spell)
+		}
+	}
+	return circledSpells
+}
+
+func isCircle(spell models.Spell, circle int) bool {
+	return spell.SpellCost == wrmrules.GetCost(circle)
 }
