@@ -8,13 +8,6 @@ import (
 	log "github.com/sirupsen/logrus"
 )
 
-const (
-	//ContentTypeHeaderKey HTTP header key used to set the type of the body content
-	ContentTypeHeaderKey = "Content-Type"
-	//ContentTypeHeaderValue HTTP header value used to define the type of the body content
-	ContentTypeHeaderValue = "application/json"
-)
-
 func mockReadAllDatabase() []models.Item {
 	items := make([]models.Item, 0)
 	items = append(items, models.Item{ItemName: "Adventurer’s Kit", ItemCost: 5})

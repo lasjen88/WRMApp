@@ -5,6 +5,9 @@ import (
 
 	mongo "./v1/mongo"
 
+	"github.com/lasjen88/WRMApp/backend/v1/characterservice"
+	"github.com/lasjen88/WRMApp/backend/v1/initiativeservice"
+	"github.com/lasjen88/WRMApp/backend/v1/itemservice"
 	log "github.com/sirupsen/logrus"
 
 	"github.com/gorilla/mux"
@@ -16,9 +19,9 @@ const (
 )
 
 func setRouteHandles(router *mux.Router) *mux.Router {
-	router = characterservice.setRouteHandles(router)
-	router = itemservice.setRouteHandles(router)
-	router = initiativeservice.setRouteHandles(router)
+	router = characterservice.SetRouteHandles(router)
+	router = itemservice.SetRouteHandles(router)
+	router = initiativeservice.SetRouteHandles(router)
 	return router
 }
 
