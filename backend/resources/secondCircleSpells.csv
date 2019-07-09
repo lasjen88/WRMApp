@@ -1,0 +1,7 @@
+Create Food and Water;The spell creates one daily ration of food and water for one person.
+Healing Light;Heals 1d6 HP without having to touch the target. Each level of enhancement heals two additional hit points.
+IdentiFy;Allows the caster to identify one magic property of an item. Each level of enhancement identifies one additional property.
+Levitation;Caster may slowly float up and down for up to 3 minutes. The spell can be sustained for 1 mana per additional minute. This spell provides no horizontal propulsion, but a caster may use other means to float horizontally.
+Lightning Bolt;Missile attack that causes 1d6+2 damage (+2 damage per level of enhancement).
+Magic Armor;A magic bubble around the caster absorbs any damage until its HP are depleted or dispelled. The bubble has 4 hit points and each level of enhancement adds 4 more. Excess damage is not transferred.
+War Pipes;This spell effect all targets within 5 yards. The affected targets may use an additional D6 and keep the highest for all Warrior rolls for the duration of 1d6 rounds. Each level of enhancement extends the duration one round. (Requires Musician Skill)
