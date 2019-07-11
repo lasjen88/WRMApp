@@ -8,9 +8,9 @@ Familiar;You have a small animal like a cat or falcon as a pet that can do some 
 Henchman;You are followed by a henchman who carries your equipment and treasure around and may be asked to perform tasks.
 Hunter;You are a trained hunter and may live off the land easily. When given enough time, you can provide enough food to feed a party of four.
 Leadership;You are a talented leader any may command troops.
-Lucky Devil;You may reroll any roll once per scene (or combat)
-Massive Attack;You can add your Warrior attribute level to your melee attack damage once per combat
-Precise Shot;You can add your Rogue attribute level to your ranged attack damage once per combat
+Lucky Devil;You may reroll any roll once per scene (or combat).
+Massive Attack;You can add your Warrior attribute level to your melee attack damage once per combat.
+Precise Shot;You can add your Rogue attribute level to your ranged attack damage once per combat.
 Sailor;You are trained in steering a boat or sailing ship and don’t get any penalties for fighting on a sea vessel.
 Sixth Sense;You may roll a die before any ambush or other situation where you are about to be surprised. If you roll 4+ you are not surprised and may act first.
 Tough As Nails;Damage you take from an individual attack is reduced by 2.
@@ -45,4 +45,4 @@ Spellthief; The caster may make a Mage check to learn a spell after seeing anoth
 Warmage; The caster may cast a spell and make an attack with a Warrior or Rogue skill in the same round.
 'Look Out, Sir!';This talent allows you to protect one of your allies from, by jumping into the way of the attack and taking the damage instead of them. This talent is most effective when used with the alternate armor rules. In order to do so, you make a Dodge check against the attackers attack. When successful you take the damage instead of your ally. Armor applies as normal. With GM’s discretion this can also be used by your henchman, if you also have the henchman talent. He then can use this talent to protect his patron.
 Missile Parry;Your great skill in your weapon of choice allows you to parry even missile attacks. You have to pick one weapon of choice which you must be skilled in. You can then use this weapon to try to parry ranged attacks directed at you. Parrying missile attacks always costs you one combat action, even if you have the Dual-wield talent.
-Nimble Fighter;This talent allows you to dodge without forfeiting a combat action.")
+Nimble Fighter;This talent allows you to dodge without forfeiting a combat action.
