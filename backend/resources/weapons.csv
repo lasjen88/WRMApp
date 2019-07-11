@@ -1,0 +1,21 @@
+Unarmed/Fist;           UNARMED;    1d - 2; ;       0;;Core Rulebook
+Axe;                    AXES;       1d;     ;       5;;Core Rulebook
+Bow;                    BOWS;       1d;     80;     4;  ARROW;Core Rulebook
+Crossbow;               BOWS;       1d + 3; 100;    8;  BOLT;Core Rulebook
+Dagger;                 DAGGERS;    1d - 2; ;       2;;Core Rulebook
+Dagger (Thrown);        THROWN;     1d - 2; 8;      2;  THROWN_DAGGER;Core Rulebook
+Dragon pistol;          FIREARMS;   1d + 4; 20;     18; DRAGON_SHOT;Core Rulebook
+Dragon rifle;           FIREARMS;   2d;     40;     25; DRAGON_SHOT;Core Rulebook
+Halbard;                POLEARMS;   1d +3;  ;       7;;Core Rulebook
+Longbow;                BOWS;       1d + 2; 120;    8;  ARROW;Core Rulebook
+Mace;                   BLUNT;      1d;     ;       5;;Core Rulebook
+Spear;                  POLEARMS;   1d;     20;     3;;Core Rulebook
+Spear (Thrown);         THROWN;     1d;     20;     3;  THROWN_SPEAR;Core Rulebook
+Staff;                  BLUNT;      1d;     ;       2;;Core Rulebook
+Sword;                  SWORDS;     1d;     ;       5;;Core Rulebook
+Throwing star;          THROWN;     1d - 1; 15;     2;  THROWN_STAR;Core Rulebook
+Two-handed sword;       SWORDS;     2d;     ;       10;;Core Rulebook
+Two-handed axe;         AXES;       2d;     ;       10;;Core Rulebook
+Two-handed mace;        BLUNT;      2d;     ;       10;;Core Rulebook
+Two-handed Warhammer;   BLUNT;      2d;     ;       10;;Core Rulebook
+Warhammer;              BLUNT;      1d;     ;       5;;Core Rulebook
