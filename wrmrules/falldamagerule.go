@@ -1,7 +1,5 @@
 package wrmrules
 
-import "math/rand"
-
 const (
 	yardsPerMeter = 1.0936
 )
@@ -19,7 +17,7 @@ func GetDamageFromFallenMeters(fallInMeters int) int {
 func getDamageFromFallenYards(fallInYards float64) int {
 	damage := 0
 	for i := 1.0; i <= fallInYards/3.0; i++ {
-		damage = damage + rand.Intn(6)
+		damage = damage + RollDSix()
 	}
 	return damage
 }

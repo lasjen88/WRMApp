@@ -2,7 +2,6 @@ package wrmrules
 
 import (
 	"errors"
-	"math/rand"
 	"sort"
 
 	"github.com/lasjen88/WRMApp/backend/v1/models"
@@ -28,6 +27,6 @@ func getInitiative(character models.Character) (models.Initiative, error) {
 	}
 	return models.Initiative{
 		CharacterName:   character.CharacterName,
-		InitiativeValue: character.Rogue + rand.Intn(6),
+		InitiativeValue: character.Rogue + RollDSix(),
 	}, nil
 }
