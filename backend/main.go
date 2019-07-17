@@ -3,7 +3,7 @@ package main
 import (
 	"net/http"
 
-	mongo "./v1/mongo"
+	mongogo "./v1/mongo"
 
 	"github.com/lasjen88/WRMApp/backend/v1/characterservice"
 	"github.com/lasjen88/WRMApp/backend/v1/initiativeservice"
@@ -27,13 +27,17 @@ func setRouteHandles(router *mux.Router) *mux.Router {
 
 func main() {
 	//Database handling
-	mongoSession := mongo.GetSession(URL)
-	DB := mongo.Use(mongoSession, DB_NAME)
+	mongoSession := mongogo.GetSession(URL)
+	//DB := mongogo.Use(mongoSession, DB_NAME)
 	log.Infof("Databases: ")
-	mongo.PrintDBNames(mongoSession)
+	mongogo.PrintDBNames(mongoSession)
 	log.Infof("Collections and Documents: ")
 	//mongo.PrintCollectionNames(DB)
-	mongo.PrintCollections(DB)
+	//mongogo.PrintCollections(DB)
+	err := mongogo.InitializeEquipment(mongoSession)
+	if err != nil {
+		log.Fatal(err)
+	}
 	defer mongoSession.Close()
 
 	//Route handling
