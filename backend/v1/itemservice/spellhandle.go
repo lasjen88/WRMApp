@@ -56,7 +56,7 @@ func (handle *SpellHandle) GetCircleSpells(writer http.ResponseWriter, request *
 		return
 	}
 	circledSpells := getSpellsFromCircle(spells, circle)
-	logrus.Infof("Found %d spells at circle %d", len(spells), circle)
+	logrus.Infof("Found %d spells at circle %d", len(circledSpells), circle)
 	json.NewEncoder(writer).Encode(circledSpells)
 }
 
