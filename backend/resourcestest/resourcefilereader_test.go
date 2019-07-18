@@ -15,3 +15,43 @@ func TestReadEquipmentFile(t *testing.T) {
 		t.Errorf("Expected 31 items, found %d", len(items))
 	}
 }
+
+func TestReadFirstSpellFile(t *testing.T) {
+	items, err := resources.ReadSpellsFromFile("../resources/firstCircleSpells.csv", 1)
+	if err != nil {
+		t.Errorf("An error was thrown: %v", err)
+	}
+	if len(items) != 24 {
+		t.Errorf("Expected 31 items, found %d", len(items))
+	}
+}
+
+func TestReadSecondSpellFile(t *testing.T) {
+	items, err := resources.ReadSpellsFromFile("../resources/secondCircleSpells.csv", 2)
+	if err != nil {
+		t.Errorf("An error was thrown: %v", err)
+	}
+	if len(items) != 7 {
+		t.Errorf("Expected 31 items, found %d", len(items))
+	}
+}
+
+func TestReadThirdSpellFile(t *testing.T) {
+	items, err := resources.ReadSpellsFromFile("../resources/thirdCircleSpells.csv", 3)
+	if err != nil {
+		t.Errorf("An error was thrown: %v", err)
+	}
+	if len(items) != 5 {
+		t.Errorf("Expected 31 items, found %d", len(items))
+	}
+}
+
+func TestReadFourthSpellFile(t *testing.T) {
+	items, err := resources.ReadSpellsFromFile("../resources/fourthCircleSpells.csv", 4)
+	if err != nil {
+		t.Errorf("An error was thrown: %v", err)
+	}
+	if len(items) != 5 {
+		t.Errorf("Expected 31 items, found %d", len(items))
+	}
+}

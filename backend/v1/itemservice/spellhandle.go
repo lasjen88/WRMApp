@@ -7,7 +7,9 @@ import (
 
 	"github.com/gorilla/mux"
 	"github.com/lasjen88/WRMApp/backend/v1/models"
+	"github.com/lasjen88/WRMApp/backend/v1/mongo"
 	"github.com/lasjen88/WRMApp/wrmrules"
+	"github.com/sirupsen/logrus"
 	log "github.com/sirupsen/logrus"
 )
 
@@ -17,24 +19,27 @@ type spellDto struct {
 	Circle           int    `json:"circle"`
 }
 
-func mockReadAllSpallsDatabase() []models.Spell {
-	spells := make([]models.Spell, 0)
-	spells = append(spells, models.Spell{SpellName: "Summon Rat", DifficultyLevel: 4, ManaConsumption: 1, SpellCost: 25, SpellDescription: "Summons a rat"})
-	spells = append(spells, models.Spell{SpellName: "Summon Cat", DifficultyLevel: 6, ManaConsumption: 2, SpellCost: 50, SpellDescription: "Summons a cat"})
-	spells = append(spells, models.Spell{SpellName: "Summon Horse", DifficultyLevel: 9, ManaConsumption: 4, SpellCost: 75, SpellDescription: "Summons a horse"})
-	spells = append(spells, models.Spell{SpellName: "Summon Elephant", DifficultyLevel: 25, ManaConsumption: 8, SpellCost: 100, SpellDescription: "Summons an elephant"})
-	return spells
+//ItemHandle Rest handle for spells
+type SpellHandle struct {
+	SpellCollection mongo.SpellCollection
 }
 
 //GetSpells provides all spells from the database, regardless of circle
-func GetSpells(writer http.ResponseWriter, request *http.Request) {
+func (handle *SpellHandle) GetSpells(writer http.ResponseWriter, request *http.Request) {
 	writer.Header().Set(ContentTypeHeaderKey, ContentTypeHeaderValue)
-	spells := mockReadAllSpallsDatabase()
+	spells, err := handle.SpellCollection.GetAllSpells()
+	if err != nil {
+		writer.WriteHeader(http.StatusInternalServerError)
+		writer.Write([]byte("500 - Error while searching for the spells"))
+		log.Error(err)
+		return
+	}
+	logrus.Infof("Found %d spells", len(spells))
 	json.NewEncoder(writer).Encode(spells)
 }
 
 //GetCircleSpells provides all spells from the specified circle
-func GetCircleSpells(writer http.ResponseWriter, request *http.Request) {
+func (handle *SpellHandle) GetCircleSpells(writer http.ResponseWriter, request *http.Request) {
 	writer.Header().Set(ContentTypeHeaderKey, ContentTypeHeaderValue)
 	params := mux.Vars(request)
 	circle, err := strconv.Atoi(params["circle"])
@@ -42,13 +47,21 @@ func GetCircleSpells(writer http.ResponseWriter, request *http.Request) {
 		log.Error(err)
 		return
 	}
-	spells := mockReadAllSpallsDatabase()
+	spells, err := handle.SpellCollection.GetAllSpells()
+	logrus.Infof("Found %d spells. Starting cicle filtering.", len(spells))
+	if err != nil {
+		writer.WriteHeader(http.StatusBadRequest)
+		writer.Write([]byte("400 - Unable to find spells in that circle"))
+		log.Error(err)
+		return
+	}
 	circledSpells := getSpellsFromCircle(spells, circle)
+	logrus.Infof("Found %d spells at circle %d", len(spells), circle)
 	json.NewEncoder(writer).Encode(circledSpells)
 }
 
 //CreateSpell creates a spell
-func CreateSpell(writer http.ResponseWriter, request *http.Request) {
+func (handle *SpellHandle) CreateSpell(writer http.ResponseWriter, request *http.Request) {
 	writer.Header().Set(ContentTypeHeaderKey, ContentTypeHeaderValue)
 	var spellDto spellDto
 	err := json.NewDecoder(request.Body).Decode(&spellDto)

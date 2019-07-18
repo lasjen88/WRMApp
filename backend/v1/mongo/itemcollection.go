@@ -12,6 +12,7 @@ type ItemCollection struct {
 	itemCollection               *mgo.Collection
 }
 
+//IsEmptyCollection checks if the collection is currently empty
 func (i *ItemCollection) IsEmptyCollection() (bool, error) {
 	if i.itemCollection == nil {
 		i.setupCollection()
