@@ -1,7 +1,6 @@
 package main
 
 import (
-	"log"
 	"net/http"
 
 	"github.com/globalsign/mgo"
@@ -9,6 +8,7 @@ import (
 	"github.com/lasjen88/WRMApp/backend/v1/initiativeservice"
 	"github.com/lasjen88/WRMApp/backend/v1/itemservice"
 	"github.com/lasjen88/WRMApp/backend/v1/mongo"
+	"github.com/sirupsen/logrus"
 
 	"github.com/gorilla/mux"
 )
@@ -29,7 +29,7 @@ func setupItemServiceRoute(router *mux.Router, mongoSession *mgo.Session) *mux.R
 	}
 	err := mongo.InitializeEquipment(mongoSession)
 	if err != nil {
-		log.Fatal(err)
+		logrus.Fatal(err)
 	}
 	spellCollection := mongo.SpellCollection{
 		DatabaseName:   databaseName,
@@ -38,7 +38,7 @@ func setupItemServiceRoute(router *mux.Router, mongoSession *mgo.Session) *mux.R
 	}
 	err = mongo.InitializeSpells(mongoSession)
 	if err != nil {
-		log.Fatal(err)
+		logrus.Fatal(err)
 	}
 	itemHandle := itemservice.ItemHandle{ItemCollection: itemCollection}
 	spellHandle := itemservice.SpellHandle{SpellCollection: spellCollection}
@@ -59,5 +59,5 @@ func main() {
 	router := mux.NewRouter()
 	router = setRouteHandles(router, mongoSession)
 	defer mongoSession.Close()
-	log.Fatal(http.ListenAndServe(":8000", router))
+	logrus.Fatal(http.ListenAndServe(":8000", router))
 }
