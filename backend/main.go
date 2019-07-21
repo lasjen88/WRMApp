@@ -18,7 +18,8 @@ const (
 	databaseName            = "wrm"
 	itemCollectionName      = "equipment"
 	spellCollectionName     = "spell"
-	characterCollectionName = "equipment"
+	characterCollectionName = "character"
+	backendPort             = "8000"
 )
 
 func setupItemServiceRoute(router *mux.Router, mongoSession *mgo.Session) *mux.Router {
@@ -48,7 +49,15 @@ func setupItemServiceRoute(router *mux.Router, mongoSession *mgo.Session) *mux.R
 
 func setRouteHandles(router *mux.Router, mongoSession *mgo.Session) *mux.Router {
 	router = setupItemServiceRoute(router, mongoSession)
-	router = characterservice.SetRouteHandles(router)
+
+	characterCollection := mongo.CharacterCollection{
+		DatabaseName:   databaseName,
+		CollectionName: characterCollectionName,
+		Session:        mongoSession,
+	}
+	characterhandle := characterservice.CharacterHandle{CharacterCollection: characterCollection}
+
+	router = characterservice.SetRouteHandles(router, characterhandle)
 	router = initiativeservice.SetRouteHandles(router)
 	return router
 }
@@ -59,5 +68,5 @@ func main() {
 	router := mux.NewRouter()
 	router = setRouteHandles(router, mongoSession)
 	defer mongoSession.Close()
-	logrus.Fatal(http.ListenAndServe(":8000", router))
+	logrus.Fatal(http.ListenAndServe(":"+backendPort, router))
 }

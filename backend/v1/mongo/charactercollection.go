@@ -2,6 +2,7 @@ package mongo
 
 import (
 	"github.com/globalsign/mgo"
+	"github.com/globalsign/mgo/bson"
 	"github.com/lasjen88/WRMApp/backend/v1/models"
 )
 
@@ -31,6 +32,18 @@ func (c *CharacterCollection) PutCharacter(newCharacter models.Character) error 
 		c.setupCollection()
 	}
 	err := c.charcterCollection.Insert(newCharacter)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+//DeleteCharacter delete an existing character from the collection
+func (c *CharacterCollection) DeleteCharacter(characterid string) error {
+	if c.charcterCollection == nil {
+		c.setupCollection()
+	}
+	err := c.charcterCollection.Remove(bson.M{"id": characterid})
 	if err != nil {
 		return err
 	}
