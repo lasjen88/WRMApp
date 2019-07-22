@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"net/http"
 
+	"github.com/lasjen88/WRMApp/backend/router"
 	"github.com/lasjen88/WRMApp/backend/v1/models"
 	"github.com/lasjen88/WRMApp/backend/v1/mongo"
 	log "github.com/sirupsen/logrus"
@@ -16,7 +17,7 @@ type ItemHandle struct {
 
 //GetItems is a service handle for getting all items in the database
 func (handle *ItemHandle) GetItems(writer http.ResponseWriter, request *http.Request) {
-	writer.Header().Set(ContentTypeHeaderKey, ContentTypeHeaderValue)
+	writer = router.SetHtppWriterHeaders(writer)
 	items, err := handle.ItemCollection.GetAllItems()
 	if err != nil {
 		writer.WriteHeader(http.StatusInternalServerError)
@@ -29,7 +30,7 @@ func (handle *ItemHandle) GetItems(writer http.ResponseWriter, request *http.Req
 
 //CreateItem is a service handle inserting a new item into the database
 func (handle *ItemHandle) CreateItem(writer http.ResponseWriter, request *http.Request) {
-	writer.Header().Set(ContentTypeHeaderKey, ContentTypeHeaderValue)
+	writer = router.SetHtppWriterHeaders(writer)
 	var item models.Item
 	decodeErr := json.NewDecoder(request.Body).Decode(&item)
 	if decodeErr != nil {

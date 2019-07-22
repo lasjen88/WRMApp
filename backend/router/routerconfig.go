@@ -13,6 +13,8 @@ const (
 	AccessControlAllowOriginHeader string = "Access-Control-Allow-Origin"
 	//AccessControlAllowOriginHeaderValue is the http header value for Access-Control-Allow-Origin
 	AccessControlAllowOriginHeaderValue string = "*"
+	//BackendPort is the port at where you find the backend
+	BackendPort string = "8000"
 )
 
 //SetHtppWriterHeaders set the defualt http writer headers.
