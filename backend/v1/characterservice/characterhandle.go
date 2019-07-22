@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"net/http"
 
+	"github.com/lasjen88/WRMApp/backend/router"
 	"github.com/lasjen88/WRMApp/backend/v1/mongo"
 
 	"github.com/gorilla/mux"
@@ -17,21 +18,9 @@ type CharacterHandle struct {
 	CharacterCollection mongo.CharacterCollection
 }
 
-const (
-	//ContentTypenHeader is the http header key for Content-Type
-	ContentTypenHeader string = "Content-Type"
-	//ContentTypenHeaderValue is the http header value for Content-Type
-	ContentTypenHeaderValue string = "application/json"
-	//AccessControlAllowOriginHeader is the http header key for Access-Control-Allow-Origin
-	AccessControlAllowOriginHeader string = "Access-Control-Allow-Origin"
-	//AccessControlAllowOriginHeaderValue is the http header value for Access-Control-Allow-Origin
-	AccessControlAllowOriginHeaderValue string = "*"
-)
-
 //GetCharacters fetches all characters
 func (c *CharacterHandle) GetCharacters(writer http.ResponseWriter, request *http.Request) {
-	writer.Header().Set(ContentTypenHeader, ContentTypenHeaderValue)
-	writer.Header().Set(AccessControlAllowOriginHeader, AccessControlAllowOriginHeaderValue)
+	writer = router.SetHtppWriterHeaders(writer)
 	characters, err := c.CharacterCollection.GetAllCharacters()
 	if err != nil {
 		writer.WriteHeader(http.StatusInternalServerError)
@@ -44,8 +33,7 @@ func (c *CharacterHandle) GetCharacters(writer http.ResponseWriter, request *htt
 
 //CreateCharacter creates a new character
 func (c *CharacterHandle) CreateCharacter(writer http.ResponseWriter, request *http.Request) {
-	writer.Header().Set(ContentTypenHeader, ContentTypenHeaderValue)
-	writer.Header().Set(AccessControlAllowOriginHeader, AccessControlAllowOriginHeaderValue)
+	writer = router.SetHtppWriterHeaders(writer)
 	var character models.Character
 	parseError := json.NewDecoder(request.Body).Decode(&character)
 	if parseError != nil {
@@ -61,8 +49,7 @@ func (c *CharacterHandle) CreateCharacter(writer http.ResponseWriter, request *h
 
 //GetCharacter fetches the character specified in the parameter
 func (c *CharacterHandle) GetCharacter(writer http.ResponseWriter, request *http.Request) {
-	writer.Header().Set(ContentTypenHeader, ContentTypenHeaderValue)
-	writer.Header().Set(AccessControlAllowOriginHeader, AccessControlAllowOriginHeaderValue)
+	writer = router.SetHtppWriterHeaders(writer)
 	params := mux.Vars(request)
 	characters, err := c.CharacterCollection.GetAllCharacters()
 	if err != nil {
@@ -84,8 +71,7 @@ func (c *CharacterHandle) GetCharacter(writer http.ResponseWriter, request *http
 
 //DeleteCharacter deletes the character
 func (c *CharacterHandle) DeleteCharacter(writer http.ResponseWriter, request *http.Request) {
-	writer.Header().Set(ContentTypenHeader, ContentTypenHeaderValue)
-	writer.Header().Set(AccessControlAllowOriginHeader, AccessControlAllowOriginHeaderValue)
+	writer = router.SetHtppWriterHeaders(writer)
 	params := mux.Vars(request)
 	err := c.CharacterCollection.DeleteCharacter(params["id"])
 	if err != nil {
@@ -98,8 +84,7 @@ func (c *CharacterHandle) DeleteCharacter(writer http.ResponseWriter, request *h
 
 //UpdateCharacter updates the character
 func (c *CharacterHandle) UpdateCharacter(writer http.ResponseWriter, request *http.Request) {
-	writer.Header().Set(ContentTypenHeader, ContentTypenHeaderValue)
-	writer.Header().Set(AccessControlAllowOriginHeader, AccessControlAllowOriginHeaderValue)
+	writer = router.SetHtppWriterHeaders(writer)
 	var character models.Character
 	parseError := json.NewDecoder(request.Body).Decode(&character)
 	if parseError != nil {

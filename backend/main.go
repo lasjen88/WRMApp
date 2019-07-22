@@ -49,22 +49,14 @@ func setupItemServiceRoute(router *mux.Router, mongoSession *mgo.Session) *mux.R
 
 func setRouteHandles(router *mux.Router, mongoSession *mgo.Session) *mux.Router {
 	router = setupItemServiceRoute(router, mongoSession)
-
-	characterCollection := mongo.CharacterCollection{
-		DatabaseName:   databaseName,
-		CollectionName: characterCollectionName,
-		Session:        mongoSession,
-	}
-	characterhandle := characterservice.CharacterHandle{CharacterCollection: characterCollection}
-
-	router = characterservice.SetRouteHandles(router, characterhandle)
+	router = characterservice.SetRouteHandles(router)
 	router = initiativeservice.SetRouteHandles(router)
 	return router
 }
 
 func main() {
 	//Route handling
-	mongoSession := mongo.GetSession(databaseURL)
+	mongoSession := mongo.GetSession(mongo.DatabaseURL)
 	router := mux.NewRouter()
 	router = setRouteHandles(router, mongoSession)
 	defer mongoSession.Close()
