@@ -6,12 +6,16 @@ import (
 )
 
 const (
-	DatabaseURL             = "localhost"
-	DatabaseName            = "wrm"
-	ItemCollectionName      = "equipment"
-	SpellCollectionName     = "spell"
+	//DatabaseURL host name of the database server
+	DatabaseURL = "localhost"
+	//DatabaseName name of the mongo database
+	DatabaseName = "wrm"
+	//ItemCollectionName collection for equipment
+	ItemCollectionName = "equipment"
+	//SpellCollectionName collection for spells
+	SpellCollectionName = "spell"
+	//CharacterCollectionName collection for characters
 	CharacterCollectionName = "character"
-	BackendPort             = "8000"
 )
 
 //GetSession creates and returns an mgo session to the MongoDb at the specified URL.
