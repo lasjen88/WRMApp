@@ -18,9 +18,13 @@ type CharacterHandle struct {
 }
 
 const (
-	ContentTypenHeader                  string = "Content-Type"
-	ContentTypenHeaderValue             string = "application/json"
-	AccessControlAllowOriginHeader      string = "Access-Control-Allow-Origin"
+	//ContentTypenHeader is the http header key for Content-Type
+	ContentTypenHeader string = "Content-Type"
+	//ContentTypenHeaderValue is the http header value for Content-Type
+	ContentTypenHeaderValue string = "application/json"
+	//AccessControlAllowOriginHeader is the http header key for Access-Control-Allow-Origin
+	AccessControlAllowOriginHeader string = "Access-Control-Allow-Origin"
+	//AccessControlAllowOriginHeaderValue is the http header value for Access-Control-Allow-Origin
 	AccessControlAllowOriginHeaderValue string = "*"
 )
 
@@ -92,21 +96,24 @@ func (c *CharacterHandle) DeleteCharacter(writer http.ResponseWriter, request *h
 	}
 }
 
-/*
 //UpdateCharacter updates the character
-func UpdateCharacter(writer http.ResponseWriter, request *http.Request) {
+func (c *CharacterHandle) UpdateCharacter(writer http.ResponseWriter, request *http.Request) {
 	writer.Header().Set(ContentTypenHeader, ContentTypenHeaderValue)
 	writer.Header().Set(AccessControlAllowOriginHeader, AccessControlAllowOriginHeaderValue)
-	params := mux.Vars(request)
-
-	for index, item := range characters {
-		if item.ID == params["id"] {
-			var character models.Character
-			_ = json.NewDecoder(request.Body).Decode(&character)
-			characters = append(characters[:index], characters[index+1:]...)
-			characters = append(characters, character)
-			break
-		}
+	var character models.Character
+	parseError := json.NewDecoder(request.Body).Decode(&character)
+	if parseError != nil {
+		writer.WriteHeader(http.StatusBadRequest)
+		writer.Write([]byte("400 - Could not parse json body to character"))
+		log.Error(parseError)
+		return
 	}
-	json.NewEncoder(writer).Encode(characters)
-}*/
+	params := mux.Vars(request)
+	err := c.CharacterCollection.UpdateCharacter(params["id"], character)
+	if err != nil {
+		writer.WriteHeader(http.StatusInternalServerError)
+		writer.Write([]byte("500 - Could not delete character."))
+		log.Error(err)
+		return
+	}
+}
