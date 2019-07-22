@@ -3,41 +3,61 @@ package main
 import (
 	"net/http"
 
-	mongo "./v1/mongo"
-
+	"github.com/globalsign/mgo"
 	"github.com/lasjen88/WRMApp/backend/v1/characterservice"
 	"github.com/lasjen88/WRMApp/backend/v1/initiativeservice"
 	"github.com/lasjen88/WRMApp/backend/v1/itemservice"
-	log "github.com/sirupsen/logrus"
+	"github.com/lasjen88/WRMApp/backend/v1/mongo"
+	"github.com/sirupsen/logrus"
 
 	"github.com/gorilla/mux"
 )
 
 const (
-	URL     = "localhost"
-	DB_NAME = "wrm"
+	databaseURL             = "localhost"
+	databaseName            = "wrm"
+	itemCollectionName      = "equipment"
+	spellCollectionName     = "spell"
+	characterCollectionName = "equipment"
 )
 
-func setRouteHandles(router *mux.Router) *mux.Router {
+func setupItemServiceRoute(router *mux.Router, mongoSession *mgo.Session) *mux.Router {
+	itemCollection := mongo.ItemCollection{
+		DatabaseName:   databaseName,
+		CollectionName: itemCollectionName,
+		Session:        mongoSession,
+	}
+	err := mongo.InitializeEquipment(mongoSession)
+	if err != nil {
+		logrus.Fatal(err)
+	}
+	spellCollection := mongo.SpellCollection{
+		DatabaseName:   databaseName,
+		CollectionName: spellCollectionName,
+		Session:        mongoSession,
+	}
+	err = mongo.InitializeSpells(mongoSession)
+	if err != nil {
+		logrus.Fatal(err)
+	}
+	itemHandle := itemservice.ItemHandle{ItemCollection: itemCollection}
+	spellHandle := itemservice.SpellHandle{SpellCollection: spellCollection}
+	router = itemservice.SetRouteHandles(router, itemHandle, spellHandle)
+	return router
+}
+
+func setRouteHandles(router *mux.Router, mongoSession *mgo.Session) *mux.Router {
+	router = setupItemServiceRoute(router, mongoSession)
 	router = characterservice.SetRouteHandles(router)
-	router = itemservice.SetRouteHandles(router)
 	router = initiativeservice.SetRouteHandles(router)
 	return router
 }
 
 func main() {
-	//Database handling
-	mongoSession := mongo.GetSession(URL)
-	DB := mongo.Use(mongoSession, DB_NAME)
-	log.Infof("Databases: ")
-	mongo.PrintDBNames(mongoSession)
-	log.Infof("Collections and Documents: ")
-	//mongo.PrintCollectionNames(DB)
-	mongo.PrintCollections(DB)
-	defer mongoSession.Close()
-
 	//Route handling
+	mongoSession := mongo.GetSession(databaseURL)
 	router := mux.NewRouter()
-	router = setRouteHandles(router)
-	log.Fatal(http.ListenAndServe(":8000", router))
+	router = setRouteHandles(router, mongoSession)
+	defer mongoSession.Close()
+	logrus.Fatal(http.ListenAndServe(":8000", router))
 }

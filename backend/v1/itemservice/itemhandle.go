@@ -5,34 +5,30 @@ import (
 	"net/http"
 
 	"github.com/lasjen88/WRMApp/backend/v1/models"
+	"github.com/lasjen88/WRMApp/backend/v1/mongo"
 	log "github.com/sirupsen/logrus"
 )
 
-func mockReadAllDatabase() []models.Item {
-	items := make([]models.Item, 0)
-	items = append(items, models.Item{ItemName: "Adventurer’s Kit", ItemCost: 5})
-	items = append(items, models.Item{ItemName: "Backpack", ItemCost: 4})
-	items = append(items, models.Item{ItemName: "Cask of beer", ItemCost: 6})
-	items = append(items, models.Item{ItemName: "Cask of wine", ItemCost: 9})
-	items = append(items, models.Item{ItemName: "Donkey or mule", ItemCost: 25})
-	return items
-}
-
-func mockWriteToDatabase(item models.Item) error {
-	items := make([]models.Item, 0)
-	items = append(items, item)
-	return nil
+//ItemHandle Rest handle for items
+type ItemHandle struct {
+	ItemCollection mongo.ItemCollection
 }
 
 //GetItems is a service handle for getting all items in the database
-func GetItems(writer http.ResponseWriter, request *http.Request) {
+func (handle *ItemHandle) GetItems(writer http.ResponseWriter, request *http.Request) {
 	writer.Header().Set(ContentTypeHeaderKey, ContentTypeHeaderValue)
-	items := mockReadAllDatabase()
+	items, err := handle.ItemCollection.GetAllItems()
+	if err != nil {
+		writer.WriteHeader(http.StatusInternalServerError)
+		writer.Write([]byte("500 - Error while searching for the items"))
+		log.Error(err)
+		return
+	}
 	json.NewEncoder(writer).Encode(items)
 }
 
 //CreateItem is a service handle inserting a new item into the database
-func CreateItem(writer http.ResponseWriter, request *http.Request) {
+func (handle *ItemHandle) CreateItem(writer http.ResponseWriter, request *http.Request) {
 	writer.Header().Set(ContentTypeHeaderKey, ContentTypeHeaderValue)
 	var item models.Item
 	decodeErr := json.NewDecoder(request.Body).Decode(&item)
@@ -42,7 +38,7 @@ func CreateItem(writer http.ResponseWriter, request *http.Request) {
 		log.Error(decodeErr)
 		return
 	}
-	databaseErr := mockWriteToDatabase(item)
+	databaseErr := handle.ItemCollection.PutItem(item)
 	if databaseErr != nil {
 		writer.WriteHeader(http.StatusInternalServerError)
 		writer.Write([]byte("500 - Could not write to database"))
