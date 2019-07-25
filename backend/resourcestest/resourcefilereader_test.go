@@ -46,6 +46,39 @@ func TestReadLanguageFile(t *testing.T) {
 	}
 }
 
+func TestReadTalentFile(t *testing.T) {
+	talents, err := resources.ReadTalentsFromFile("../resources/talents.csv")
+	if err != nil {
+		t.Errorf("An error was thrown: %v", err)
+	}
+	if len(talents) != 48 {
+		t.Errorf("Expected 48 talents, found %d", len(talents))
+	}
+}
+
+func TestJsjsjs(t *testing.T) {
+	uhhh := "1d - 2"
+	haha := uhhh[5:6]
+	if haha != "2" {
+		t.Errorf("Oh no... it was %s", haha)
+	}
+}
+
+func TestReadSkillFile(t *testing.T) {
+	skills, err := resources.ReadSkillsFromFile("../resources/skills.csv")
+	if err != nil {
+		t.Errorf("An error was thrown: %v", err)
+	}
+	if len(skills) != 21 {
+		t.Errorf("Expected 21 skills, found %d", len(skills))
+	}
+	for _, skill := range skills {
+		if skill.Attribute == -1 {
+			t.Errorf("The attribute of %s was set to -1!", skill.SkillName)
+		}
+	}
+}
+
 func TestReadRaceFile(t *testing.T) {
 	races, err := resources.ReadRaceFromFile("../resources/races.csv")
 	if err != nil {

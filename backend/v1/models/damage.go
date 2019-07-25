@@ -5,14 +5,17 @@ import "fmt"
 type modifierOperator int
 
 const (
+	//None modifies nothing
+	None modifierOperator = 0
+
 	//Addition modifies the damage by adding additional damage to the d6 throw
-	Addition modifierOperator = 0
+	Addition modifierOperator = 1
 
 	//Substraction modifies the damage by subtracting damage from the d6 throw
-	Substraction modifierOperator = 1
+	Substraction modifierOperator = 2
 
 	//Divisor modifies the damage by dividing the damage of the d6 throw
-	Divisor modifierOperator = 2
+	Divisor modifierOperator = 3
 )
 
 //Damage stores a damage structure
