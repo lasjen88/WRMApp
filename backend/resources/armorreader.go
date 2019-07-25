@@ -16,10 +16,10 @@ func ReadArmorFromFile(path string) ([]models.Armor, error) {
 	}
 	var armor []models.Armor
 	for _, line := range lines {
-		var costError error
-		armor, costError = parseArmor(line, armor)
-		if costError != nil {
-			return nil, costError
+		var valueError error
+		armor, valueError = parseArmor(line, armor)
+		if valueError != nil {
+			return nil, valueError
 		}
 	}
 	return armor, nil

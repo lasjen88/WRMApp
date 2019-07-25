@@ -26,6 +26,36 @@ func TestReadArmorFile(t *testing.T) {
 	}
 }
 
+func TestReadShieldsFile(t *testing.T) {
+	shields, err := resources.ReadArmorFromFile("../resources/shields.csv")
+	if err != nil {
+		t.Errorf("An error was thrown: %v", err)
+	}
+	if len(shields) != 3 {
+		t.Errorf("Expected 3 shields, found %d", len(shields))
+	}
+}
+
+func TestReadLanguageFile(t *testing.T) {
+	language, err := resources.ReadLanguageFromFile("../resources/languages.csv")
+	if err != nil {
+		t.Errorf("An error was thrown: %v", err)
+	}
+	if len(language) != 9 {
+		t.Errorf("Expected 9 languages, found %d", len(language))
+	}
+}
+
+func TestReadRaceFile(t *testing.T) {
+	races, err := resources.ReadRaceFromFile("../resources/races.csv")
+	if err != nil {
+		t.Errorf("An error was thrown: %v", err)
+	}
+	if len(races) != 13 {
+		t.Errorf("Expected 13 races, found %d", len(races))
+	}
+}
+
 func TestReadFirstSpellFile(t *testing.T) {
 	items, err := resources.ReadSpellsFromFile("../resources/firstCircleSpells.csv", 1)
 	if err != nil {
