@@ -6,6 +6,7 @@ import (
 	"strconv"
 
 	"github.com/gorilla/mux"
+	"github.com/lasjen88/WRMApp/backend/router"
 	"github.com/lasjen88/WRMApp/backend/v1/models"
 	"github.com/lasjen88/WRMApp/backend/v1/mongo"
 	"github.com/lasjen88/WRMApp/wrmrules"
@@ -19,14 +20,14 @@ type spellDto struct {
 	Circle           int    `json:"circle"`
 }
 
-//ItemHandle Rest handle for spells
+//SpellHandle Rest handle for spells
 type SpellHandle struct {
 	SpellCollection mongo.SpellCollection
 }
 
 //GetSpells provides all spells from the database, regardless of circle
 func (handle *SpellHandle) GetSpells(writer http.ResponseWriter, request *http.Request) {
-	writer.Header().Set(ContentTypeHeaderKey, ContentTypeHeaderValue)
+	writer = router.SetHtppWriterHeaders(writer)
 	spells, err := handle.SpellCollection.GetAllSpells()
 	if err != nil {
 		writer.WriteHeader(http.StatusInternalServerError)
@@ -40,7 +41,7 @@ func (handle *SpellHandle) GetSpells(writer http.ResponseWriter, request *http.R
 
 //GetCircleSpells provides all spells from the specified circle
 func (handle *SpellHandle) GetCircleSpells(writer http.ResponseWriter, request *http.Request) {
-	writer.Header().Set(ContentTypeHeaderKey, ContentTypeHeaderValue)
+	writer = router.SetHtppWriterHeaders(writer)
 	params := mux.Vars(request)
 	circle, err := strconv.Atoi(params["circle"])
 	if err != nil {
@@ -62,21 +63,24 @@ func (handle *SpellHandle) GetCircleSpells(writer http.ResponseWriter, request *
 
 //CreateSpell creates a spell
 func (handle *SpellHandle) CreateSpell(writer http.ResponseWriter, request *http.Request) {
-	writer.Header().Set(ContentTypeHeaderKey, ContentTypeHeaderValue)
+	writer = router.SetHtppWriterHeaders(writer)
 	var spellDto spellDto
 	err := json.NewDecoder(request.Body).Decode(&spellDto)
 	if err != nil {
+		writer.WriteHeader(http.StatusBadRequest)
+		writer.Write([]byte("400 - Unable to parse spell"))
 		log.Error(err)
 		return
 	}
-	spell := models.Spell{
-		SpellName:        spellDto.SpellName,
-		DifficultyLevel:  wrmrules.GetDifficultyLevel(spellDto.Circle),
-		ManaConsumption:  wrmrules.GetManaConsumption(spellDto.Circle),
-		SpellCost:        wrmrules.GetCost(spellDto.Circle),
-		SpellDescription: spellDto.SpellDescription,
+	err = handle.SpellCollection.PutSpell(createSpell(spellDto))
+	if err != nil {
+		writer.WriteHeader(http.StatusInternalServerError)
+		writer.Write([]byte("500 - Unable create spell"))
+		log.Error(err)
+		return
 	}
-	json.NewEncoder(writer).Encode(spell)
+	writer.WriteHeader(http.StatusCreated)
+	writer.Write([]byte("Spell created"))
 }
 
 func getSpellsFromCircle(allSpells []models.Spell, circle int) []models.Spell {
@@ -87,6 +91,16 @@ func getSpellsFromCircle(allSpells []models.Spell, circle int) []models.Spell {
 		}
 	}
 	return circledSpells
+}
+
+func createSpell(dto spellDto) models.Spell {
+	return models.Spell{
+		SpellName:        dto.SpellName,
+		DifficultyLevel:  wrmrules.GetDifficultyLevel(dto.Circle),
+		ManaConsumption:  wrmrules.GetManaConsumption(dto.Circle),
+		SpellCost:        wrmrules.GetCost(dto.Circle),
+		SpellDescription: dto.SpellDescription,
+	}
 }
 
 func isCircle(spell models.Spell, circle int) bool {
