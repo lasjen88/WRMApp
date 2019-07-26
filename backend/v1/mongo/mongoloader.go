@@ -78,10 +78,7 @@ func InitializeSkills(collection SkillCollection) error {
 }
 
 //InitializeTalents preloads the database with talents from the resource files
-func InitializeTalents(mongoSession *mgo.Session) error {
-	GetSession(DatabaseURL)
-	wrmCollection := WrmCollection{DatabaseName: DatabaseName, CollectionName: TalentCollectionName, Session: mongoSession}
-	collection := TalentCollection{talentCollection: wrmCollection}
+func InitializeTalents(collection TalentCollection) error {
 	isEmpty, err := collection.IsEmptyCollection()
 	if err != nil {
 		return err

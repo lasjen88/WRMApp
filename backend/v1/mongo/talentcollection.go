@@ -6,16 +6,16 @@ import (
 
 //TalentCollection holds the data collection
 type TalentCollection struct {
-	talentCollection WrmCollection
+	Wrmcollection WrmCollection
 }
 
 //GetAllTalents fetches all talents in the collection
 func (t *TalentCollection) GetAllTalents() ([]models.Talent, error) {
-	if t.talentCollection.collection == nil {
-		t.talentCollection.SetupCollection()
+	if t.Wrmcollection.collection == nil {
+		t.Wrmcollection.SetupCollection()
 	}
 	var talents []models.Talent
-	err := t.talentCollection.collection.Find(nil).All(&talents)
+	err := t.Wrmcollection.collection.Find(nil).All(&talents)
 	if err != nil {
 		return nil, err
 	}
@@ -24,10 +24,10 @@ func (t *TalentCollection) GetAllTalents() ([]models.Talent, error) {
 
 //PutTalent inserts a skill to the collection
 func (t *TalentCollection) PutTalent(newTalent models.Talent) error {
-	if t.talentCollection.collection == nil {
-		t.talentCollection.SetupCollection()
+	if t.Wrmcollection.collection == nil {
+		t.Wrmcollection.SetupCollection()
 	}
-	err := t.talentCollection.collection.Insert(newTalent)
+	err := t.Wrmcollection.collection.Insert(newTalent)
 	if err != nil {
 		return err
 	}

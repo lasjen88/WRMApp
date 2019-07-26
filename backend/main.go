@@ -10,6 +10,7 @@ import (
 	"github.com/lasjen88/WRMApp/backend/v1/itemservice"
 	"github.com/lasjen88/WRMApp/backend/v1/mongo"
 	"github.com/lasjen88/WRMApp/backend/v1/skillservice"
+	"github.com/lasjen88/WRMApp/backend/v1/talentservice"
 	"github.com/sirupsen/logrus"
 
 	"github.com/gorilla/mux"
@@ -28,5 +29,6 @@ func setRouteHandles(router *mux.Router, mongoSession *mgo.Session) *mux.Router 
 	router = characterservice.SetRouteHandles(router)
 	router = initiativeservice.SetRouteHandles(router)
 	router = skillservice.SetRouteHandles(router)
+	router = talentservice.SetRouteHandles(router)
 	return router
 }
