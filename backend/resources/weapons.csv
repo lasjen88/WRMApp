@@ -6,7 +6,7 @@ Dagger;                 DAGGERS;    1d - 2; ;       2;;Core Rulebook
 Dagger (Thrown);        THROWN;     1d - 2; 8;      2;  THROWN_DAGGER;Core Rulebook
 Dragon pistol;          FIREARMS;   1d + 4; 20;     18; DRAGON_SHOT;Core Rulebook
 Dragon rifle;           FIREARMS;   2d;     40;     25; DRAGON_SHOT;Core Rulebook
-Halbard;                POLEARMS;   1d +3;  ;       7;;Core Rulebook
+Halbard;                POLEARMS;   1d + 3;  ;       7;;Core Rulebook
 Longbow;                BOWS;       1d + 2; 120;    8;  ARROW;Core Rulebook
 Mace;                   BLUNT;      1d;     ;       5;;Core Rulebook
 Spear;                  POLEARMS;   1d;     20;     3;;Core Rulebook

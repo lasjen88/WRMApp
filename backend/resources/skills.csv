@@ -1,21 +1,21 @@
-Acrobatics;ROGUE
-Alchemy;MAGE
-Athletics;WARRIOR
-Awareness;MAGE
-Axes;WARRIOR
-Blunt;WARRIOR
-Bows;ROGUE
-Driving;WARRIOR
-Daggers;ROGUE
-Firearms;ROGUE
-Herbalism;MAGE
-Lore;MAGE
-Musician;MAGE
-Polearms;WARRIOR
-Riding;WARRIOR
-Swords;WARRIOR
-Thaumaturgy;MAGE
-Thievery;ROGUE
-Thrown;ROGUE
-Unarmed;WARRIOR
-Language;MAGE
+Acrobatics;ROGUE;Training in activities like dancing, contortion, climbing, tightrope walking, tumbling.
+Alchemy;MAGE;Training in creating and identifying potions and salves.
+Athletics;WARRIOR;Training in swimming, running and jumping.
+Awareness;MAGE;This skill is a measure of a characters awareness of his surroundings.
+Axes;WARRIOR;Training with axes.
+Blunt;WARRIOR;Training in all blunt weapons incl. maces and staves.
+Bows;ROGUE;Skill for using bows and crossbows.
+Driving;WARRIOR;Training with driving vehicles.
+Daggers;ROGUE;Training with daggers and knives.
+Firearms;ROGUE;Training in the usage of exotic firearms.
+Herbalism;MAGE;Knowledge of plants, herbs and their medical uses. Can be used to heal critically wounded characters.
+Lore;MAGE;General knowledge.
+Musician;MAGE;You know how to play an instrument of your choice. May be taken multiple times. Enhances the amount of life party members recover on rest days. 
+Polearms;WARRIOR;Training with polearms, spears and lances.
+Riding;WARRIOR;Training in riding on horses and other common mounts.
+Swords;WARRIOR;Training with all kinds of swords, including two-handed ones.
+Thaumaturgy;MAGE;Skilled with arcane spells and rituals.
+Thievery;ROGUE;Training in the roguish arts like picking locks and picking pockets.
+Thrown;ROGUE;Proficiency with thrown weapons like shuriken.
+Unarmed;WARRIOR;Training with unarmed fighting.
+Language;MAGE;You know a language of your choice. May be taken multiple times. You can speak the language sufficiently to be clearly understood by other speakers of the language. Characters with a Mage attribute of 4 or more can read a language under most circumstances. Otherwise, a Mage attribute check is required.

@@ -32,9 +32,9 @@ var Arrow = AmmoType{
 	BundleCost: 2,
 }
 
-//ThownDagger static ammo type used for daggers
-var ThownDagger = AmmoType{
-	AmmoName:   "Thown Dagger",
+//ThrownDagger static ammo type used for daggers
+var ThrownDagger = AmmoType{
+	AmmoName:   "Thrown Dagger",
 	BundleSize: 1,
 	BundleCost: 2,
 }
@@ -46,16 +46,16 @@ var DragonShot = AmmoType{
 	BundleCost: 4,
 }
 
-//ThownSpear static ammo type used for spears
-var ThownSpear = AmmoType{
-	AmmoName:   "Thown Spear",
+//ThrownSpear static ammo type used for spears
+var ThrownSpear = AmmoType{
+	AmmoName:   "Thrown Spear",
 	BundleSize: 1,
 	BundleCost: 3,
 }
 
-//ThownStar static ammo type used for throwing stars
-var ThownStar = AmmoType{
-	AmmoName:   "Thown Star",
+//ThrownStar static ammo type used for throwing stars
+var ThrownStar = AmmoType{
+	AmmoName:   "Thrown Star",
 	BundleSize: 1,
 	BundleCost: 2,
 }

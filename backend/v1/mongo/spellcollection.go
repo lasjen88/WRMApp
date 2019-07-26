@@ -15,11 +15,7 @@ type SpellCollection struct {
 
 //IsEmptyCollection checks if the collection is currently empty
 func (s *SpellCollection) IsEmptyCollection() (bool, error) {
-	if s.spellCollection == nil {
-		s.setupCollection()
-	}
-	var spells []models.Spell
-	err := s.spellCollection.Find(nil).All(&spells)
+	spells, err := s.GetAllSpells()
 	if err != nil {
 		return true, err
 	}

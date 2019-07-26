@@ -14,11 +14,7 @@ type ItemCollection struct {
 
 //IsEmptyCollection checks if the collection is currently empty
 func (i *ItemCollection) IsEmptyCollection() (bool, error) {
-	if i.itemCollection == nil {
-		i.setupCollection()
-	}
-	var items []models.Item
-	err := i.itemCollection.Find(nil).All(&items)
+	items, err := i.GetAllItems()
 	if err != nil {
 		return true, err
 	}

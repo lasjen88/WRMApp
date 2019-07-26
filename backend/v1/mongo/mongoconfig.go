@@ -16,6 +16,16 @@ const (
 	SpellCollectionName = "spell"
 	//CharacterCollectionName collection for characters
 	CharacterCollectionName = "character"
+	//SkillCollectionName collection for skills
+	SkillCollectionName = "skill"
+	//TalentCollectionName collection for talents
+	TalentCollectionName = "talent"
+	//ArmorCollectionName collection for armors
+	ArmorCollectionName = "armor"
+	//LanguageCollectionName collection for languages
+	LanguageCollectionName = "language"
+	//RaceCollectionName collection for races
+	RaceCollectionName = "race"
 )
 
 //GetSession creates and returns an mgo session to the MongoDb at the specified URL.

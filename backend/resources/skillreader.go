@@ -17,7 +17,7 @@ func ReadSkillsFromFile(path string) ([]models.Skill, error) {
 		skills = append(skills, models.Skill{
 			SkillName:        line[0],
 			Attribute:        models.Value(line[1]),
-			SkillDescription: "",
+			SkillDescription: line[2],
 		})
 	}
 	return skills, nil

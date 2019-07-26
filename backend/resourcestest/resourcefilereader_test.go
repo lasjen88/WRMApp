@@ -89,6 +89,16 @@ func TestReadRaceFile(t *testing.T) {
 	}
 }
 
+func TestReadWeaponFile(t *testing.T) {
+	weapons, err := resources.ReadWeaponsFromFile("../resources/weapons.csv")
+	if err != nil {
+		t.Errorf("An error was thrown: %v", err)
+	}
+	if len(weapons) != 21 {
+		t.Errorf("Expected 21 races, found %d", len(weapons))
+	}
+}
+
 func TestReadFirstSpellFile(t *testing.T) {
 	items, err := resources.ReadSpellsFromFile("../resources/firstCircleSpells.csv", 1)
 	if err != nil {

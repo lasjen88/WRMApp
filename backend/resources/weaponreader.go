@@ -56,7 +56,7 @@ func createModelWeapon(line []string) (models.Weapon, error) {
 	if rangeError != nil {
 		return modelWeapon, rangeError
 	}
-	cost, costErr := strconv.Atoi(line[4])
+	cost, costErr := strconv.Atoi(strings.TrimSpace(line[4]))
 	if costErr != nil {
 		return modelWeapon, costErr
 	}
@@ -97,6 +97,9 @@ func parseDamage(damageString string) (models.Damage, error) {
 		} else {
 			return damage, errors.New("Bad modifier")
 		}
+		if len(damageString) < 6 {
+			return damage, errors.New(damageString + " is not long enough.")
+		}
 		var modiferValueError error
 		damage.ModifierValue, modiferValueError = strconv.Atoi(damageString[5:6])
 		if modiferValueError != nil {
@@ -113,9 +116,23 @@ func parseRange(rangeString string) (int, error) {
 	return strconv.Atoi(rangeString)
 }
 
-func parseAmmo(ammoString string) (models.AmmoType, error) {
-	if ammoString == "" {
+func parseAmmo(line string) (models.AmmoType, error) {
+	if line == "" {
 		return models.NoAmmo, nil
 	}
-	return models.ThownStar, nil
+	ammoString := strings.ReplaceAll(line, "_", " ")
+	if strings.EqualFold(models.Bolt.AmmoName, ammoString) {
+		return models.Bolt, nil
+	} else if strings.EqualFold(models.Arrow.AmmoName, ammoString) {
+		return models.Arrow, nil
+	} else if strings.EqualFold(models.ThrownDagger.AmmoName, ammoString) {
+		return models.ThrownDagger, nil
+	} else if strings.EqualFold(models.DragonShot.AmmoName, ammoString) {
+		return models.DragonShot, nil
+	} else if strings.EqualFold(models.ThrownSpear.AmmoName, ammoString) {
+		return models.ThrownSpear, nil
+	} else if strings.EqualFold(models.ThrownStar.AmmoName, ammoString) {
+		return models.ThrownStar, nil
+	}
+	return models.NoAmmo, errors.New(ammoString + " could not be parsed as an ammo type.")
 }
