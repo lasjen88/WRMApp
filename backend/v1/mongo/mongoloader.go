@@ -18,7 +18,6 @@ var talentFiles = [...]string{"./backend/resources/talents.csv"}
 var languageFiles = [...]string{"./backend/resources/languages.csv"}
 var armorFiles = [...]string{"./backend/resources/armor.csv"}
 var shieldFiles = [...]string{"./backend/resources/shields.csv"}
-var raceFiles = [...]string{"./backend/resources/races.csv"}
 
 //InitializeEquipment preloads the database with equipment from the resource files
 func InitializeEquipment(mongoSession *mgo.Session) error {

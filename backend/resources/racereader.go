@@ -32,15 +32,15 @@ func ReadRaceFromFile(path string) ([]RaceDto, error) {
 }
 
 func parseRace(line []string, races []RaceDto) ([]RaceDto, error) {
-	language := models.Language{LanguageName: line[3]}
+	language := models.Language{LanguageName: strings.TrimSpace(line[3])}
 	modelRace := models.Race{RaceName: line[0],
-		RaceDescription: line[1],
+		RaceDescription: strings.TrimSpace(line[1]),
 		RaceLanguages:   []models.Language{language},
 	}
-	talentString := strings.Split(line[2], ",")
+	talentStrings := strings.Split(line[2], ",")
 	races = append(races, RaceDto{
 		Race:    modelRace,
-		Talents: talentString,
+		Talents: talentStrings,
 	})
 	return races, nil
 }

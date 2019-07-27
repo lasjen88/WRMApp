@@ -56,14 +56,6 @@ func TestReadTalentFile(t *testing.T) {
 	}
 }
 
-func TestJsjsjs(t *testing.T) {
-	uhhh := "1d - 2"
-	haha := uhhh[5:6]
-	if haha != "2" {
-		t.Errorf("Oh no... it was %s", haha)
-	}
-}
-
 func TestReadSkillFile(t *testing.T) {
 	skills, err := resources.ReadSkillsFromFile("../resources/skills.csv")
 	if err != nil {

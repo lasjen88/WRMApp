@@ -11,6 +11,7 @@ import (
 	"github.com/lasjen88/WRMApp/backend/v1/itemservice"
 	"github.com/lasjen88/WRMApp/backend/v1/languageservice"
 	"github.com/lasjen88/WRMApp/backend/v1/mongo"
+	"github.com/lasjen88/WRMApp/backend/v1/raceservice"
 	"github.com/lasjen88/WRMApp/backend/v1/skillservice"
 	"github.com/lasjen88/WRMApp/backend/v1/talentservice"
 	"github.com/lasjen88/WRMApp/backend/v1/weaponservice"
@@ -36,5 +37,6 @@ func setRouteHandles(router *mux.Router, mongoSession *mgo.Session) *mux.Router 
 	router = languageservice.SetRouteHandles(router)
 	router = armorservice.SetRouteHandles(router)
 	router = weaponservice.SetRouteHandles(router)
+	router = raceservice.SetRouteHandles(router)
 	return router
 }
