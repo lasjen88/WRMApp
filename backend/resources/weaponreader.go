@@ -10,8 +10,8 @@ import (
 
 //WeaponDto is a dto for the weapon resource
 type WeaponDto struct {
-	weapon      models.Weapon
-	skillString string
+	Weapon      models.Weapon
+	SkillString string
 }
 
 //ReadWeaponsFromFile fetches the weapons from the resource file
@@ -36,11 +36,11 @@ func ReadWeaponsFromFile(path string) ([]WeaponDto, error) {
 func parseWeapon(line []string, weapons []WeaponDto) ([]WeaponDto, error) {
 	var weapon WeaponDto
 	var err error
-	weapon.weapon, err = createModelWeapon(line)
+	weapon.Weapon, err = createModelWeapon(line)
 	if err != nil {
 		return nil, err
 	}
-	weapon.skillString = strings.TrimSpace(line[1])
+	weapon.SkillString = strings.TrimSpace(line[1])
 	weapons = append(weapons, weapon)
 	return weapons, nil
 }

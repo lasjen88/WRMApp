@@ -5,12 +5,15 @@ import (
 
 	"github.com/globalsign/mgo"
 	routerconfig "github.com/lasjen88/WRMApp/backend/router"
+	"github.com/lasjen88/WRMApp/backend/v1/armorservice"
 	"github.com/lasjen88/WRMApp/backend/v1/characterservice"
 	"github.com/lasjen88/WRMApp/backend/v1/initiativeservice"
 	"github.com/lasjen88/WRMApp/backend/v1/itemservice"
+	"github.com/lasjen88/WRMApp/backend/v1/languageservice"
 	"github.com/lasjen88/WRMApp/backend/v1/mongo"
 	"github.com/lasjen88/WRMApp/backend/v1/skillservice"
 	"github.com/lasjen88/WRMApp/backend/v1/talentservice"
+	"github.com/lasjen88/WRMApp/backend/v1/weaponservice"
 	"github.com/sirupsen/logrus"
 
 	"github.com/gorilla/mux"
@@ -30,5 +33,8 @@ func setRouteHandles(router *mux.Router, mongoSession *mgo.Session) *mux.Router 
 	router = initiativeservice.SetRouteHandles(router)
 	router = skillservice.SetRouteHandles(router)
 	router = talentservice.SetRouteHandles(router)
+	router = languageservice.SetRouteHandles(router)
+	router = armorservice.SetRouteHandles(router)
+	router = weaponservice.SetRouteHandles(router)
 	return router
 }

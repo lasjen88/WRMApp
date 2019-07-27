@@ -15,6 +15,10 @@ var spellFiles = [...]string{
 }
 var skillFiles = [...]string{"./backend/resources/skills.csv"}
 var talentFiles = [...]string{"./backend/resources/talents.csv"}
+var languageFiles = [...]string{"./backend/resources/languages.csv"}
+var armorFiles = [...]string{"./backend/resources/armor.csv"}
+var shieldFiles = [...]string{"./backend/resources/shields.csv"}
+var raceFiles = [...]string{"./backend/resources/races.csv"}
 
 //InitializeEquipment preloads the database with equipment from the resource files
 func InitializeEquipment(mongoSession *mgo.Session) error {
@@ -93,6 +97,111 @@ func InitializeTalents(collection TalentCollection) error {
 		return nil
 	}
 	logrus.Info("Talents already loaded.")
+	return nil
+}
+
+//InitializeLanguages preloads the database with languages from the resource files
+func InitializeLanguages(collection LanguageCollection) error {
+	isEmpty, err := collection.IsEmptyCollection()
+	if err != nil {
+		return err
+	}
+	if isEmpty {
+		for _, path := range languageFiles {
+			err = loadLanguages(collection, path)
+			if err != nil {
+				return err
+			}
+		}
+		return nil
+	}
+	logrus.Info("Languages already loaded.")
+	return nil
+}
+
+//InitializeArmors preloads the database with armor from the resource files
+func InitializeArmors(collection ArmorCollection) error {
+	isEmpty, err := collection.IsEmptyCollection()
+	if err != nil {
+		return err
+	}
+	if isEmpty {
+		for _, path := range armorFiles {
+			err = loadArmor(collection, path)
+			if err != nil {
+				return err
+			}
+		}
+		return nil
+	}
+	logrus.Info("Armors already loaded.")
+	return nil
+}
+
+//InitializeShields preloads the database with shields from the resource files
+func InitializeShields(collection ShieldCollection) error {
+	isEmpty, err := collection.IsEmptyCollection()
+	if err != nil {
+		return err
+	}
+	if isEmpty {
+		for _, path := range shieldFiles {
+			err = loadShield(collection, path)
+			if err != nil {
+				return err
+			}
+		}
+		return nil
+	}
+	logrus.Info("Shields already loaded.")
+	return nil
+}
+
+func loadShield(collection ShieldCollection, path string) error {
+	shields, err := resources.ReadArmorFromFile(path)
+	if err != nil {
+		return err
+	}
+	logrus.Infof("Found %d shields in %s.", len(shields), path)
+	for _, shield := range shields {
+		databaseError := collection.PutShield(shield)
+		if databaseError != nil {
+			return databaseError
+		}
+	}
+	logrus.Info("Shield load complete")
+	return nil
+}
+
+func loadArmor(collection ArmorCollection, path string) error {
+	armors, err := resources.ReadArmorFromFile(path)
+	if err != nil {
+		return err
+	}
+	logrus.Infof("Found %d armors in %s.", len(armors), path)
+	for _, armor := range armors {
+		databaseError := collection.PutArmor(armor)
+		if databaseError != nil {
+			return databaseError
+		}
+	}
+	logrus.Info("Armor load complete")
+	return nil
+}
+
+func loadLanguages(collection LanguageCollection, path string) error {
+	languages, err := resources.ReadLanguageFromFile(path)
+	if err != nil {
+		return err
+	}
+	logrus.Infof("Found %d languages in %s.", len(languages), path)
+	for _, language := range languages {
+		databaseError := collection.PutLanguage(language)
+		if databaseError != nil {
+			return databaseError
+		}
+	}
+	logrus.Info("Language load complete")
 	return nil
 }
 

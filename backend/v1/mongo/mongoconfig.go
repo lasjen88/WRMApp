@@ -26,6 +26,10 @@ const (
 	LanguageCollectionName = "language"
 	//RaceCollectionName collection for races
 	RaceCollectionName = "race"
+	//ShieldCollectionName collection for shields
+	ShieldCollectionName = "shield"
+	//WeaponCollectionName collection for weapons
+	WeaponCollectionName = "weapon"
 )
 
 //GetSession creates and returns an mgo session to the MongoDb at the specified URL.
