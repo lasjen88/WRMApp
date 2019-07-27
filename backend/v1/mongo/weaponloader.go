@@ -24,7 +24,7 @@ func InitializeWeapons(weaponCollection WeaponCollection, skillCollection SkillC
 	}
 	skillsIsEmpty, DatabaseError := skillCollection.IsEmptyCollection()
 	if DatabaseError != nil {
-		return err
+		return DatabaseError
 	}
 	if skillsIsEmpty {
 		return errors.New("Cannot load weapons before skills have been loaded")
@@ -43,11 +43,11 @@ func loadWeapon(collection WeaponCollection, skillCollection SkillCollection, pa
 	if err != nil {
 		return err
 	}
+	logrus.Infof("Found %d weapons in %s.", len(weapons), path)
 	skills, skillError := skillCollection.GetAllSkills()
 	if skillError != nil {
 		return skillError
 	}
-	logrus.Infof("Found %d weapons in %s.", len(weapons), path)
 	for _, weaponDto := range weapons {
 		weapon, dtoError := getWeaponFromDto(weaponDto, skills)
 		if dtoError != nil {
