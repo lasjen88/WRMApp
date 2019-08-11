@@ -50,6 +50,18 @@ func (c *CharacterCollection) DeleteCharacter(characterid string) error {
 	return nil
 }
 
+//UpdateCharacter updates an existing character from the collection, by replacing it with a new one. The id is persisted.
+func (c *CharacterCollection) UpdateCharacter(characterid string, character models.Character) error {
+	if c.charcterCollection == nil {
+		c.setupCollection()
+	}
+	err := c.charcterCollection.Update(bson.M{"id": characterid}, character)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
 func (c *CharacterCollection) setupCollection() {
 	c.charcterCollection = c.Session.DB(c.DatabaseName).C(c.CollectionName)
 }

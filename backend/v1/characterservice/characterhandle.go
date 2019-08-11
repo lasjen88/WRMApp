@@ -5,10 +5,12 @@ import (
 	"fmt"
 	"net/http"
 
+	"github.com/lasjen88/WRMApp/backend/router"
 	"github.com/lasjen88/WRMApp/backend/v1/mongo"
 
 	"github.com/gorilla/mux"
 	"github.com/lasjen88/WRMApp/backend/v1/models"
+	"github.com/sirupsen/logrus"
 	log "github.com/sirupsen/logrus"
 )
 
@@ -17,17 +19,9 @@ type CharacterHandle struct {
 	CharacterCollection mongo.CharacterCollection
 }
 
-const (
-	ContentTypenHeader                  string = "Content-Type"
-	ContentTypenHeaderValue             string = "application/json"
-	AccessControlAllowOriginHeader      string = "Access-Control-Allow-Origin"
-	AccessControlAllowOriginHeaderValue string = "*"
-)
-
 //GetCharacters fetches all characters
 func (c *CharacterHandle) GetCharacters(writer http.ResponseWriter, request *http.Request) {
-	writer.Header().Set(ContentTypenHeader, ContentTypenHeaderValue)
-	writer.Header().Set(AccessControlAllowOriginHeader, AccessControlAllowOriginHeaderValue)
+	writer = router.SetHtppWriterHeaders(writer)
 	characters, err := c.CharacterCollection.GetAllCharacters()
 	if err != nil {
 		writer.WriteHeader(http.StatusInternalServerError)
@@ -35,13 +29,13 @@ func (c *CharacterHandle) GetCharacters(writer http.ResponseWriter, request *htt
 		log.Error(err)
 		return
 	}
+	logrus.Infof("Found %d charcters", len(characters))
 	json.NewEncoder(writer).Encode(characters)
 }
 
 //CreateCharacter creates a new character
 func (c *CharacterHandle) CreateCharacter(writer http.ResponseWriter, request *http.Request) {
-	writer.Header().Set(ContentTypenHeader, ContentTypenHeaderValue)
-	writer.Header().Set(AccessControlAllowOriginHeader, AccessControlAllowOriginHeaderValue)
+	writer = router.SetHtppWriterHeaders(writer)
 	var character models.Character
 	parseError := json.NewDecoder(request.Body).Decode(&character)
 	if parseError != nil {
@@ -50,15 +44,21 @@ func (c *CharacterHandle) CreateCharacter(writer http.ResponseWriter, request *h
 		log.Error(parseError)
 		return
 	}
-	c.CharacterCollection.PutCharacter(character)
+	err := c.CharacterCollection.PutCharacter(character)
+	if err != nil {
+		writer.WriteHeader(http.StatusInternalServerError)
+		writer.Write([]byte("500 - Could not character save charcter to database"))
+		log.Error(err)
+		return
+	}
+	logrus.Infof("Created character: %s", character.CharacterName)
 	writer.WriteHeader(http.StatusCreated)
-	json.NewEncoder(writer).Encode(character)
+	writer.Write([]byte("Character created"))
 }
 
 //GetCharacter fetches the character specified in the parameter
 func (c *CharacterHandle) GetCharacter(writer http.ResponseWriter, request *http.Request) {
-	writer.Header().Set(ContentTypenHeader, ContentTypenHeaderValue)
-	writer.Header().Set(AccessControlAllowOriginHeader, AccessControlAllowOriginHeaderValue)
+	writer = router.SetHtppWriterHeaders(writer)
 	params := mux.Vars(request)
 	characters, err := c.CharacterCollection.GetAllCharacters()
 	if err != nil {
@@ -80,8 +80,7 @@ func (c *CharacterHandle) GetCharacter(writer http.ResponseWriter, request *http
 
 //DeleteCharacter deletes the character
 func (c *CharacterHandle) DeleteCharacter(writer http.ResponseWriter, request *http.Request) {
-	writer.Header().Set(ContentTypenHeader, ContentTypenHeaderValue)
-	writer.Header().Set(AccessControlAllowOriginHeader, AccessControlAllowOriginHeaderValue)
+	writer = router.SetHtppWriterHeaders(writer)
 	params := mux.Vars(request)
 	err := c.CharacterCollection.DeleteCharacter(params["id"])
 	if err != nil {
@@ -90,23 +89,27 @@ func (c *CharacterHandle) DeleteCharacter(writer http.ResponseWriter, request *h
 		log.Error(err)
 		return
 	}
+	writer.Write([]byte("Character deleted"))
 }
 
-/*
 //UpdateCharacter updates the character
-func UpdateCharacter(writer http.ResponseWriter, request *http.Request) {
-	writer.Header().Set(ContentTypenHeader, ContentTypenHeaderValue)
-	writer.Header().Set(AccessControlAllowOriginHeader, AccessControlAllowOriginHeaderValue)
-	params := mux.Vars(request)
-
-	for index, item := range characters {
-		if item.ID == params["id"] {
-			var character models.Character
-			_ = json.NewDecoder(request.Body).Decode(&character)
-			characters = append(characters[:index], characters[index+1:]...)
-			characters = append(characters, character)
-			break
-		}
+func (c *CharacterHandle) UpdateCharacter(writer http.ResponseWriter, request *http.Request) {
+	writer = router.SetHtppWriterHeaders(writer)
+	var character models.Character
+	parseError := json.NewDecoder(request.Body).Decode(&character)
+	if parseError != nil {
+		writer.WriteHeader(http.StatusBadRequest)
+		writer.Write([]byte("400 - Could not parse json body to character"))
+		log.Error(parseError)
+		return
 	}
-	json.NewEncoder(writer).Encode(characters)
-}*/
+	params := mux.Vars(request)
+	err := c.CharacterCollection.UpdateCharacter(params["id"], character)
+	if err != nil {
+		writer.WriteHeader(http.StatusInternalServerError)
+		writer.Write([]byte("500 - Could not delete character."))
+		log.Error(err)
+		return
+	}
+	writer.Write([]byte("Character updated"))
+}
