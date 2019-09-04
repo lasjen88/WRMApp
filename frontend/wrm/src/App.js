@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import logo from './wrm.svg';
 import './App.css';
+import SideNav, {MenuIcon} from 'react-simple-sidenav';
 
 class Spells extends React.Component {
   constructor (props) {
@@ -129,7 +130,6 @@ class App extends Component {
     }
 
       return (
-
         <div className="App">
           <div className="App-header">
             <img src={logo} className="App-logo" alt="logo" />
@@ -137,8 +137,13 @@ class App extends Component {
           </div>
 
           <h2>Spells</h2>
-          <Spells spells={this.state.spells}  />
+        <MenuIcon onClick={() => this.setState({showNav: true})}/>
 
+        <SideNav
+          showNav={this.state.showNav}
+          onHideNav={() => this.setState({showNav: false})} />
+          <Spells spells={this.state.spells}  />
+          
           <div className="panel-list">{ characters }</div>
 
        </div>
